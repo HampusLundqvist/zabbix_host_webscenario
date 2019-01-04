@@ -1,0 +1,67 @@
+# ansible-playbook -i exampleserver, zabbix_host_webscenario.yml
+#
+- hosts: all
+  connection: local
+  gather_facts: false
+  vars:
+    zabbix_url: "https://examplezabbix/zabbix"
+    zabbix_api_user: zabbix-user
+    zabbix_api_pass: zabbix-password
+
+    zabbix_agent_hostname: "{{ inventory_hostname }}"
+    zabbix_web_uri_proxy: "https://exampleproxy"
+    zabbix_web_scenario:
+        - name: "My Example"
+          proxy: "{{ zabbix_web_uri_proxy |default('') }}"
+          status: enabled
+          application_name: "Web monitoring"
+          steps:
+            - name: "Homepage"
+              url: "https://exampleweb/"
+              status_codes: "200,201,301,302"
+              'no': "1"
+
+  tasks:
+
+  - name: Add or update web scenario
+    local_action:
+      module: zabbix_host_webscenario
+      server_url: "{{ zabbix_url }}"
+      login_user: "{{ zabbix_api_user }}"
+      login_password: "{{ zabbix_api_pass }}"
+      host_name: "{{ zabbix_agent_hostname }}"
+      name: "{{ item.name }}"
+      http_proxy: "{{ item.proxy }}"
+      application_name: "{{ item.application_name }}"
+      steps: "{{ item.steps }}"
+      state: "present"
+      force: yes
+    with_items:
+      - "{{ zabbix_web_scenario }}"
+
+  - name: Add web scenario if it doesnt already exist
+    local_action:
+      module: zabbix_host_webscenario
+      server_url: "{{ zabbix_url }}"
+      login_user: "{{ zabbix_api_user }}"
+      login_password: "{{ zabbix_api_pass }}"
+      host_name: "{{ zabbix_agent_hostname }}"
+      name: "{{ item.name }}"
+      http_proxy: "{{ item.proxy }}"
+      application_name: "{{ item.application_name }}"
+      steps: "{{ item.steps }}"
+      state: "present"
+    with_items:
+      - "{{ zabbix_web_scenario }}"
+
+  - name: Remove web scenario
+    local_action:
+      module: zabbix_host_webscenario
+      server_url: "{{ zabbix_url }}"
+      login_user: "{{ zabbix_api_user }}"
+      login_password: "{{ zabbix_api_pass }}"
+      host_name: "{{ zabbix_agent_hostname }}"
+      name: "{{ item.name }}"
+      state: absent
+    with_items:
+      - "{{ zabbix_web_scenario }}"
