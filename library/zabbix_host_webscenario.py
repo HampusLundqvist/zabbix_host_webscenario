@@ -22,7 +22,7 @@ description:
    - Create, update or delete Zabbix host web scenarios
 version_added: "2.7"
 author:
-  - Hampus Lundqvist
+  - Hampus Lundqvist (@HampusLundqvist)
 requirements:
     - "python >= 2.6"
     - zabbix-api
