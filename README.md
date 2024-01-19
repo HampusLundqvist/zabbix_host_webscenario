@@ -22,7 +22,7 @@ options:
     host_name:
         description:
             - Name of the host for the web scenario.
-       required: true
+        required: true
     name:
         description:
             - Web scenario name

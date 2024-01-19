@@ -2,17 +2,11 @@
 # vim: expandtab ai ts=4 sw=4
 # -*- coding: utf-8 -*-
 
-# (c) 2013-2014, Epic Games, Inc.
+# Copyright: (c) 2013-2024, Epic Games, Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 from __future__ import absolute_import, division, print_function
 __metaclass__ = type
-
-
-ANSIBLE_METADATA = {'metadata_version': '1.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 
 DOCUMENTATION = '''
 ---
@@ -30,7 +24,7 @@ options:
     host_name:
         description:
             - Name of the host for the web scenario.
-       required: true
+        required: true
     name:
         description:
             - Web scenario name
